@@ -2,6 +2,8 @@ from colorama import Fore, Back, Style, init
 import random
 
 num_players = 0
+dados = [1, 2, 3, 4, 5, 6]
+
 
 def validate_players():
     error = True
@@ -10,7 +12,7 @@ def validate_players():
             global num_players
             num_players = input()
             num_players = int(num_players)
-            if num_players < 2 or num_players > 7:
+            if num_players < 2 or num_players > 15:
                 if num_players == 1:
                     print(Back.RED + Fore.WHITE + 'No es posible jugar un 1 jugador. Por favor intenta de nuevo.')
                 elif num_players == -1:
@@ -27,24 +29,28 @@ def validate_players():
             print(Back.RED + Fore.WHITE + "Por Favor ingresa un número valido")
 
 
-def game_start():
 
+def game_start():
     for player in range(num_players):
-        while True:
+        error = True
+        while error:
             try:
-                print(f"Jugador {player + 1 } : ")
-                launch = int(input("Pulsa 1 para lanzar los dados : "))
+                print(f"{Fore.CYAN} Jugador {player + 1 } : ")
+                launch = int(input(f"{Fore.YELLOW} Pulsa 1 para lanzar los dados : "))
                 if launch != 1 :
-                    print("Opcion inválida, intenta nuevamente")
+                    print(f"{Back.RED} {Fore.WHITE} Opcion inválida, intenta nuevamente")
                 else:
                     throw_dice()
-                    break
+                    if not seguir_lanzando:
+                        break
             except ValueError:
-                print("Ingresa un número válido")
+                print(f"{Back.RED} {Fore.WHITE} Ingresa un número válido")
+                
                 
 
 
 def throw_dice():
+    
     dice_faces = [
         [
             "+-------+",
@@ -89,23 +95,50 @@ def throw_dice():
             "+-------+"
         ]
     ]
+    
+    
+    global dados
+    global seguir_lanzando
+    resultado = [random.choice(dados) for _ in range(len(dados))]
+    dados = [dado for dado in resultado]
+    
+    # print(f"resultado:: {resultado}")
 
-    dado1 = random.randint(1, 6)
-    dado2 = random.randint(1, 6)
-    dado3 = random.randint(1, 6)
-    dado4 = random.randint(1, 6)
-    dado5 = random.randint(1, 6)
-    dado6 = random.randint(1, 6)
+    for i in range(5):
+        for dado in resultado:
+            print(dice_faces[dado - 1][i], end="   ")
+        print()
 
-    # Obtiene las representaciones de los dados
-    representacion_dado1 = dice_faces[dado1 - 1]
-    representacion_dado2 = dice_faces[dado2 - 1]
-    representacion_dado3 = dice_faces[dado3 - 1]
-    representacion_dado4 = dice_faces[dado4 - 1]
-    representacion_dado5 = dice_faces[dado5 - 1]
-    representacion_dado6 = dice_faces[dado6 - 1]
+    # print([1,2,3,2,3,4,5,3,3,3,3,6].count(3))
+    
 
-    # Imprime los resultados uno al frente del otro
-    for line1, line2, line3, line4, linea5, linea6 in zip(representacion_dado1, representacion_dado2, representacion_dado3, representacion_dado4, representacion_dado5, representacion_dado6 ):
-        print(line1 + "   " + line2 + "   " + line3 + "   " + line4 + "   " + linea5 + "   " + linea6)
+    if 1 in resultado:
+        seguir_lanzando = True
+    else:
+        seguir_lanzando = False
+        
+    
+    while seguir_lanzando:
+        print(f'{Back.CYAN} {Fore.WHITE}  Muy bien, puedes volver a lanzar.')
+        
+        try:
+            print(f'{Fore.YELLOW} Pulsa 1 para lanzar los dados : ')
+            launch = int(input())
+            if launch != 1 :
+                print(f"{Back.RED} {Fore.WHITE} Opcion inválida, intenta nuevamente")
+            else:
+                resultado = [random.choice(dados) for _ in range(len(dados))]
+                dados = [dado for dado in resultado]
+                if 1 in resultado:
+                    seguir_lanzando = True
+                else:
+                    seguir_lanzando = False
+                for i in range(5):
+                    for dado in resultado:
+                        print(dice_faces[dado - 1][i], end="   ")
+                    print()
+                break
+        except ValueError:
+                print(f"{Back.RED} {Fore.WHITE} Ingresa un número válido")
+    
         
