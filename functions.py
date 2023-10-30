@@ -12,7 +12,7 @@ def validate_players():
             global num_players
             num_players = input()
             num_players = int(num_players)
-            if num_players < 2 or num_players > 15:
+            if num_players < 2 or num_players > 7:
                 if num_players == 1:
                     print(Back.RED + Fore.WHITE + 'No es posible jugar un 1 jugador. Por favor intenta de nuevo.')
                 elif num_players == -1:
@@ -106,23 +106,25 @@ def throw_dice():
 
     for i in range(5):
         for dado in resultado:
-            print(dice_faces[dado - 1][i], end="   ")
+            print(Fore.LIGHTGREEN_EX + dice_faces[dado - 1][i], end="   ")
         print()
 
     # print([1,2,3,2,3,4,5,3,3,3,3,6].count(3))
     
 
-    if 1 in resultado:
+    if 2 in resultado:
         seguir_lanzando = True
+        dados.pop(-1)
     else:
         seguir_lanzando = False
+        dados = [1, 2, 3, 4, 5, 6]
         
     
     while seguir_lanzando:
         print(f'{Back.CYAN} {Fore.WHITE}  Muy bien, puedes volver a lanzar.')
         
         try:
-            print(f'{Fore.YELLOW} Pulsa 1 para lanzar los dados : ')
+            print(f'{Fore.YELLOW} Pulsa 1 para lanzar otra vez : ')
             launch = int(input())
             if launch != 1 :
                 print(f"{Back.RED} {Fore.WHITE} Opcion inválida, intenta nuevamente")
@@ -131,11 +133,13 @@ def throw_dice():
                 dados = [dado for dado in resultado]
                 if 1 in resultado:
                     seguir_lanzando = True
+                    dados.pop(-1)
                 else:
                     seguir_lanzando = False
+                    dados = [1, 2, 3, 4, 5, 6]
                 for i in range(5):
                     for dado in resultado:
-                        print(dice_faces[dado - 1][i], end="   ")
+                        print(Fore.LIGHTGREEN_EX + dice_faces[dado - 1][i], end="   ")
                     print()
                 break
         except ValueError:

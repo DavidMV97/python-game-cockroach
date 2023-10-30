@@ -4,7 +4,7 @@ from functions import *
 def main():
     init(autoreset=True)
     print("\n")
-    print(Back.CYAN + Fore.BLACK + "********** Bienvenido al juego de la cucaracha **********\n")
+    print(Back.CYAN + Fore.WHITE + "********** Bienvenido **********\n")
     print(Fore.YELLOW + "Por favor ingresa el número de jugadores  (2 - 7) : ")
     validate_players()
 
