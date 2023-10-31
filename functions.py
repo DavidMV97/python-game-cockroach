@@ -3,7 +3,7 @@ import random
 
 num_players = 0
 dados = [1, 2, 3, 4, 5, 6]
-
+seguir_lanzando = ''
 
 def validate_players():
     error = True
@@ -29,11 +29,12 @@ def validate_players():
             print(Back.RED + Fore.WHITE + "Por Favor ingresa un número valido")
 
 
-
 def game_start():
     for player in range(num_players):
-        error = True
-        while error:
+        
+        print(f'{Back.MAGENTA} Seguir lanzando ...' , seguir_lanzando)
+        
+        while True:
             try:
                 print(f"{Fore.CYAN} Jugador {player + 1 } : ")
                 launch = int(input(f"{Fore.YELLOW} Pulsa 1 para lanzar los dados : "))
@@ -43,14 +44,56 @@ def game_start():
                     throw_dice()
                     if not seguir_lanzando:
                         break
+    
             except ValueError:
                 print(f"{Back.RED} {Fore.WHITE} Ingresa un número válido")
                 
-                
-
-
+                          
 def throw_dice():
+       
+    global dados
+    global seguir_lanzando
+    resultado = [random.choice(dados) for _ in range(len(dados))]
+    dados = [dado for dado in resultado]
     
+    # if not seguir_lanzando:
+    #     print_dados(resultado)
+
+    # Cantidad de unos sacados : 
+    print(f'{Back.GREEN} {Fore.WHITE} Cantidad de unos sacados :: {resultado.count(1)}')
+    
+    print_dados(resultado)
+
+    if 1 in resultado:
+        seguir_lanzando = True
+
+    else:
+        seguir_lanzando = False
+        
+    
+    while seguir_lanzando:
+        print(f'{Back.CYAN} {Fore.WHITE}  Muy bien, puedes volver a lanzar.')
+        
+        try:
+            print(f'{Fore.YELLOW} Pulsa 1 para lanzar otra vez : ')
+            launch = int(input())
+            if launch != 1 :
+                print(f"{Back.RED} {Fore.WHITE} Opcion inválida, intenta nuevamente")
+            else:
+                resultado = [random.choice(dados) for _ in range(len(dados))]
+                dados = [dado for dado in resultado]
+                if 1 in resultado:
+                    seguir_lanzando = True
+                else:
+                    seguir_lanzando = False
+                    dados = [1, 2, 3, 4, 5, 6]
+                print_dados(resultado)
+                break
+        except ValueError:
+                print(f"{Back.RED} {Fore.WHITE} Ingresa un número válido")
+    
+        
+def print_dados(resultado):
     dice_faces = [
         [
             "+-------+",
@@ -96,53 +139,8 @@ def throw_dice():
         ]
     ]
     
-    
-    global dados
-    global seguir_lanzando
-    resultado = [random.choice(dados) for _ in range(len(dados))]
-    dados = [dado for dado in resultado]
-    
-    # print(f"resultado:: {resultado}")
-
     for i in range(5):
         for dado in resultado:
             print(Fore.LIGHTGREEN_EX + dice_faces[dado - 1][i], end="   ")
         print()
-
-    # print([1,2,3,2,3,4,5,3,3,3,3,6].count(3))
     
-
-    if 2 in resultado:
-        seguir_lanzando = True
-        dados.pop(-1)
-    else:
-        seguir_lanzando = False
-        dados = [1, 2, 3, 4, 5, 6]
-        
-    
-    while seguir_lanzando:
-        print(f'{Back.CYAN} {Fore.WHITE}  Muy bien, puedes volver a lanzar.')
-        
-        try:
-            print(f'{Fore.YELLOW} Pulsa 1 para lanzar otra vez : ')
-            launch = int(input())
-            if launch != 1 :
-                print(f"{Back.RED} {Fore.WHITE} Opcion inválida, intenta nuevamente")
-            else:
-                resultado = [random.choice(dados) for _ in range(len(dados))]
-                dados = [dado for dado in resultado]
-                if 1 in resultado:
-                    seguir_lanzando = True
-                    dados.pop(-1)
-                else:
-                    seguir_lanzando = False
-                    dados = [1, 2, 3, 4, 5, 6]
-                for i in range(5):
-                    for dado in resultado:
-                        print(Fore.LIGHTGREEN_EX + dice_faces[dado - 1][i], end="   ")
-                    print()
-                break
-        except ValueError:
-                print(f"{Back.RED} {Fore.WHITE} Ingresa un número válido")
-    
-        
