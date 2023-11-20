@@ -6,7 +6,6 @@ def bienvenida():
     print("\n")
     print(Back.CYAN + Fore.WHITE + "********** Bienvenido **********")
     print("\n")
-    print(Fore.YELLOW + "Por favor ingresa el número de jugadores  (2 - 7) : ")
     validate_players()
 
     # restablecer los colores y el estilo al final para evitar efectos no deseados en la consola
