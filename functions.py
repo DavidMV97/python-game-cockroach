@@ -1,5 +1,8 @@
+from cucaracha import *
 from colorama import Fore, Back
 import random
+
+end_game = False
 
 def validate_players():
     while True:
@@ -15,8 +18,7 @@ def validate_players():
 
 def game_start(num_players):
     scores = [0] * num_players  # Lista para almacenar los puntajes de cada jugador
-
-    while True:
+    while not end_game:
         for player in range(num_players):
             seguir_lanzando = True
 
@@ -29,26 +31,20 @@ def game_start(num_players):
                     else:
                         resultado = throw_dice()
                         scores[player] += resultado  # Suma la cantidad de "1" al puntaje del jugador
-                        print(f"Puntaje actual de Jugador {player + 1}: {scores[player]}")
                         seguir_lanzando = False
                 except ValueError:
                     print(f"{Back.RED} {Fore.WHITE} Ingresa un número válido")
 
-        if input("¿Quieres continuar? (y/n): ").lower() != 'y':
-            break
-
-    print("Puntajes finales:")
-    for i, score in enumerate(scores, start=1):
-        print(f"Jugador {i}: {score}")
+        
 
 def throw_dice():
+    global end_game
     count_amount_one = 0
     dados = [1, 2, 3, 4, 5, 6]
     resultado = [random.choice(dados) for _ in range(len(dados))]
     print_dados(resultado)
-    
     count_amount_one += resultado.count(1)
-    
+    end_game = cockroach_draw(count_amount_one)
 
     while 1 in resultado:
         input(f'{Fore.MAGENTA}Presiona Enter para lanzar nuevamente :')
@@ -56,7 +52,10 @@ def throw_dice():
         resultado = [random.choice(dados) for _ in range(len(dados))]
         count_amount_one += resultado.count(1)
         print_dados(resultado)
+        end_game = cockroach_draw(count_amount_one)
         
+    
+
     
     return count_amount_one
 
